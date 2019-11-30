@@ -1,20 +1,33 @@
-#define H5_USE_EIGEN
-
-#include <iostream>
+#include <model.h>
+#include <Eigen/Eigen>
 #include <highfive/H5DataSet.hpp>
 #include <highfive/H5DataSpace.hpp>
 #include <highfive/H5File.hpp>
-#include <Eigen/Eigen>
 
-#include"eigenMLP.h"
+MLP::MLP() {}
 
-const std::string FILE_NAME("../armadillo_sdf.h5");
+MLP::MLP(std::string fp) {
+    this->load(fp);
+}
 
-int main()
-{
-    HighFive::File file(FILE_NAME, HighFive::File::ReadOnly);
+void MLP::addLayer(Layer& l) {
+    layers.push_back(l);
+}
 
-    MLP mlp; 
+Eigen::VectorXf MLP::predict(Eigen::VectorXf& input) {
+    Eigen::VectorXf activation = input;
+            
+    // forward pass signal through layers!
+    for ( std::vector<Layer>::iterator it = layers.begin() ; it != layers.end(); ++it) {
+        activation = it->forward(activation);
+    }
+    return activation;
+}
+
+bool MLP::load(std::string fp) {
+
+    //validate fp exists
+    HighFive::File file(fp, HighFive::File::ReadOnly);
 
     std::vector<std::string> layers = file.listObjectNames();
 
@@ -79,10 +92,8 @@ int main()
         } 
 
         Layer l(bias, weight, activation);
-        
-        mlp.addLayer(l);
+        this->addLayer(l);
     }
-    Eigen::VectorXf pointQuery(3); 
-    pointQuery << 0.0,0.0,0.0;
-    std::cout << mlp.predict(pointQuery) << std::endl;
+
+
 }
