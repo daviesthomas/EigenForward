@@ -7,21 +7,31 @@
 MLP::MLP() {}
 
 MLP::MLP(std::string fp) {
-    this->load(fp);
+    bool ok = this->load(fp);
+
+    if (!ok) {
+        std::cerr << "Failed to load model!" << std::endl;
+        //should cleanup...
+    }
 }
 
 void MLP::addLayer(Layer& l) {
     layers.push_back(l);
 }
 
-Eigen::VectorXf MLP::predict(Eigen::VectorXf& input) {
-    Eigen::VectorXf activation = input;
-            
-    // forward pass signal through layers!
-    for ( std::vector<Layer>::iterator it = layers.begin() ; it != layers.end(); ++it) {
-        activation = it->forward(activation);
+Eigen::VectorXf MLP::predict(Eigen::MatrixXf& input) {
+    Eigen::VectorXf result(input.rows());
+    
+    // This is not the way to handle batch dimension, should be factorized
+    for (int i = 0; i < input.rows(); i ++ ){ 
+        Eigen::VectorXf activation = input.row(i);
+        for ( std::vector<Layer>::iterator it = layers.begin() ; it != layers.end(); ++it) {
+            activation = it->forward(activation);
+        }
+        result.row(i) = activation;
     }
-    return activation;
+    return result;
+
 }
 
 bool MLP::load(std::string fp) {
@@ -37,7 +47,7 @@ bool MLP::load(std::string fp) {
 
         if (objType != HighFive::ObjectType::Group) {
             std::cout << "Unspupported Layer\n";
-            return 0;
+            return false;
         }
 
         HighFive::Group group = file.getGroup(*it);
@@ -45,7 +55,7 @@ bool MLP::load(std::string fp) {
         
         if (n != 1) {
             std::cout << "Unsupported Layer\n";
-            return 0;
+            return false;
         }
 
         group = group.getGroup(*it);
@@ -58,7 +68,7 @@ bool MLP::load(std::string fp) {
             objType = group.getObjectType(*matIt);
             if (objType != HighFive::ObjectType::Dataset) {
                 std::cout << "Unsupported Layer\n";
-                return 0;
+                return false;
             }
 
             // parse the weights and biases
@@ -81,7 +91,7 @@ bool MLP::load(std::string fp) {
             }
             else {
                 std::cout << "Unsupported layer, to many dims!\n";
-                return 0;
+                return false;
             }
         }
 
@@ -94,6 +104,5 @@ bool MLP::load(std::string fp) {
         Layer l(bias, weight, activation);
         this->addLayer(l);
     }
-
-
+    return true;
 }

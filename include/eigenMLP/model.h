@@ -13,7 +13,7 @@ class MLP {
         // load model from hdf5 
         bool load(std::string fp);
         // predict inference given input
-        Eigen::VectorXf predict(Eigen::VectorXf& input);
+        Eigen::VectorXf predict(Eigen::MatrixXf& input);
 
     private:
         std::vector<Layer> layers;
