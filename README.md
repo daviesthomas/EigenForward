@@ -14,4 +14,11 @@ mkdir build && cd build
 cmake .. 
 make
 
+# TODO
+  - Lol alot
+  - Read keras .json file to init model (currently weights alone..)
+  - Eigen Tensor refactor for batch dimension support (currently just a for loop)
+  - Support skip connections/ not only simple mlp networks...
+  - support convs! (this would be rad!) 
+
 
