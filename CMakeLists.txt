@@ -13,6 +13,6 @@ find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 find_package (HighFive REQUIRED)
 
 add_subdirectory(submodules/HighFive)
-add_subdirectory(src)   #library built here
+add_subdirectory(src)   
 add_subdirectory(apps)
 
