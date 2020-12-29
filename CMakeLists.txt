@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
 project(
-    mlp
+    eigenForward
     DESCRIPTION "A simple library for eigen inference from keras weights"
 )
 set(CMAKE_CXX_STANDARD 11)
@@ -13,6 +13,6 @@ find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 find_package (HighFive REQUIRED)
 
 add_subdirectory(submodules/HighFive)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-add_subdirectory(src)
+add_subdirectory(src)   #library built here
 add_subdirectory(apps)
+
