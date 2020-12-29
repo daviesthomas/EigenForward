@@ -13,7 +13,6 @@ find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 find_package (HighFive REQUIRED)
 
 add_subdirectory(submodules/HighFive)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_subdirectory(src)
 add_subdirectory(apps)
-
-
