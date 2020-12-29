@@ -1,10 +1,13 @@
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 file(GLOB HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/eigenMLP/*.h")
 
 add_library(eigenMLP_lib layer.cpp model.cpp ${HEADER_LIST})
 
 target_include_directories(eigenMLP_lib PUBLIC ../include/eigenMLP)
+
+find_package(HighFive REQUIRED)
 
 target_link_libraries(eigenMLP_lib Eigen3::Eigen HighFive)
 

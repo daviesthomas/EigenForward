@@ -8,17 +8,15 @@ Very limited for specific but will be extended over time.
 - Eigen3
 - HighFive: https://github.com/BlueBrain/HighFive
 
+on osx we need
+``` brew install hdf5 ```
+``` brew install boost ```
+
 # Build example app
 
 mkdir build && cd build
 cmake .. 
 make
 
-# TODO
-  - Lol alot
-  - Read keras .json file to init model (currently weights alone..)
-  - Eigen Tensor refactor for batch dimension support (currently just a for loop)
-  - Support skip connections/ not only simple mlp networks...
-  - support convs! (this would be rad!) 
 
 
