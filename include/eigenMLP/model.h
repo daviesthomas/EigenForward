@@ -14,7 +14,8 @@ class MLP {
         bool load(std::string fp);
         // predict inference given input
         Eigen::VectorXf predict(Eigen::MatrixXf& input);
-
+        // update existing layers activation function
+        void updateLayerActivation(int idx, Activations act);
     private:
         std::vector<Layer> layers;
         void addLayer(Layer& l);

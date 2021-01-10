@@ -14,6 +14,7 @@ class Layer {
         ~Layer(){}
 
         Eigen::VectorXf forward(Eigen::VectorXf& input);
+        void setActivation(Activations actType);
 
     private:
         Eigen::MatrixXf w;

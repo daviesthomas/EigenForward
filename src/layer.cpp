@@ -22,3 +22,7 @@ Eigen::VectorXf Layer::activate(Eigen::VectorXf& input) {
     std::cout << "No valid activation function...not activating!\n";
     return input;
 }
+
+void Layer::setActivation(Activations actType) {
+    activation = actType;
+}
