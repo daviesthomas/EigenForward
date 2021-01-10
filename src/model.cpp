@@ -41,12 +41,23 @@ bool MLP::load(std::string fp) {
 
     std::vector<std::string> layers = file.listObjectNames();
 
+    if (layers.size() == 0) {
+        std::cout << "Invalud H5 File... exiting\n";
+        return false;
+    }
+
     for (std::vector<std::string>::iterator it = layers.begin() ; it != layers.end(); ++it) {
+        if ((*it).find("input") != std::string::npos) {
+            std::cout<< "Input layer... skipping.\n";
+            // if input layer, just skip it... we don't support it.
+            continue;
+        }
+
         // for each layer, copy weights to eigen
         HighFive::ObjectType objType = file.getObjectType(*it);
 
         if (objType != HighFive::ObjectType::Group) {
-            std::cout << "Unspupported Layer\n";
+            std::cout << "Unspupported Layer... should not be group\n";
             return false;
         }
 
@@ -54,7 +65,7 @@ bool MLP::load(std::string fp) {
         int n = group.getNumberObjects();
         
         if (n != 1) {
-            std::cout << "Unsupported Layer\n";
+            std::cout << "Unsupported Layer... should only have one member\n";
             return false;
         }
 
@@ -67,7 +78,7 @@ bool MLP::load(std::string fp) {
         for (std::vector<std::string>::iterator matIt = matNames.begin(); matIt != matNames.end(); ++matIt) {
             objType = group.getObjectType(*matIt);
             if (objType != HighFive::ObjectType::Dataset) {
-                std::cout << "Unsupported Layer\n";
+                std::cout << "Unsupported Layer... should be dataset\n";
                 return false;
             }
 

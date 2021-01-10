@@ -12,6 +12,7 @@ set(HighFive_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/submodules)
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 find_package (HighFive REQUIRED)
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_subdirectory(submodules/HighFive)
 add_subdirectory(src)
 add_subdirectory(apps)
